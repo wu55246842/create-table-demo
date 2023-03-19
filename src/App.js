@@ -18,40 +18,40 @@ function App() {
             {
               Header: 'First Name',
               accessor: 'firstName',
-              minWidth: 150,
+              minWidth: 240,
             },
             {
               Header: 'Last Name',
               accessor: 'lastName',
-              minWidth: 150,
+              minWidth: 240,
               // Use our custom `fuzzyText` filter on this column
               filter: 'fuzzyText',
             },
             {
               Header: 'Age',
               accessor: 'age',
-              minWidth: 150,
+              minWidth: 240,
               Filter: SliderColumnFilter,
               filter: 'equals',
             },
             {
               Header: 'Visits',
               accessor: 'visits',
-              minWidth: 150,
+              minWidth: 240,
               Filter: NumberRangeColumnFilter,
               filter: 'between',
             },
             {
               Header: 'Status',
               accessor: 'status',
-              minWidth: 150,
+              minWidth: 240,
               Filter: SelectColumnFilter,
               filter: 'includes',
             },
             {
               Header: 'Profile Progress',
               accessor: 'progress',
-              minWidth: 150,
+              minWidth: 240,
               Filter: SliderColumnFilter,
               filter: filterGreaterThan,
             }

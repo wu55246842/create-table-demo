@@ -1,6 +1,5 @@
 import React from 'react'
 import { useTable, useSortBy, useFilters, useColumnOrder,useRowSelect,
-  useGlobalFilter, useAsyncDebounce,
   usePagination,useBlockLayout,useResizeColumns} from 'react-table'
 import {DefaultColumnFilter} from './filters'
 
@@ -44,6 +43,8 @@ export default function UdTable({ columns, data, displayFilter, displayColumns})
         data,
         defaultColumn,
       },
+      useResizeColumns,
+      useBlockLayout,
       useColumnOrder,
       useFilters,
       useSortBy,
@@ -71,6 +72,12 @@ export default function UdTable({ columns, data, displayFilter, displayColumns})
           },
           ...columns,
         ])
+
+        hooks.useInstanceBeforeDimensions.push(({ headerGroups }) => {
+          // fix the parent group of the selection button to not be resizable
+          const selectionGroupHeader = headerGroups[0].headers[0]
+          selectionGroupHeader.canResize = false
+        })
       }
     )
   
@@ -103,16 +110,12 @@ export default function UdTable({ columns, data, displayFilter, displayColumns})
         }
       )
 
-
-
-
-  
   
 
 
     return (
       <>
-        {displayColumns?<div style={{color:'white'}}>
+        {displayColumns?<div style={{color:'black'}}>
           <div>
             <IndeterminateCheckbox {...getToggleHideAllColumnsProps()} /> Toggle All
           </div>
@@ -127,13 +130,13 @@ export default function UdTable({ columns, data, displayFilter, displayColumns})
           <br />
         </div>:''}
         
-        <table {...getTableProps()}>
+        <table {...getTableProps()} className="table">
           <thead>
             {headerGroups.map((headerGroup, i) => (
               i!==0?(
-              <tr {...headerGroup.getHeaderGroupProps()}>
+              <tr {...headerGroup.getHeaderGroupProps()} className="tr">
                 {headerGroup.headers.map(column => (
-                  <th
+                  <th className="th"
                     {...column.getHeaderProps({
                       layouttransition: spring,
                       style: {
@@ -143,6 +146,18 @@ export default function UdTable({ columns, data, displayFilter, displayColumns})
                   >
                     <div {...column.getSortByToggleProps()}>
                       {column.render('Header')}
+
+                      {/* Use column.getResizerProps to hook up the events correctly */}
+                      {column.canResize && (
+                        <div
+                          {...column.getResizerProps()}
+                          className={`resizer ${
+                            column.isResizing ? 'isResizing' : ''
+                          }`}
+                        />
+                      )}
+
+                      {/* column sort */}
                       <span>
                         {column.isSorted
                           ? column.isSortedDesc
@@ -152,7 +167,6 @@ export default function UdTable({ columns, data, displayFilter, displayColumns})
                       </span>
                     </div>
 
-                    {/* <div>{column.canFilter ? column.render('Filter') : null}</div> */}
                     {displayFilter?<div>{column.canFilter ? column.render('Filter') : null}</div>:''}
                   </th>
                 ))}
@@ -163,7 +177,7 @@ export default function UdTable({ columns, data, displayFilter, displayColumns})
               {page.map((row, i) => {
                 prepareRow(row)
                 return (
-                  <tr
+                  <tr className="tr"
                     {...row.getRowProps({
                       layouttransition: spring,
                       exit: { opacity: 0, maxHeight: 0 },
@@ -171,7 +185,7 @@ export default function UdTable({ columns, data, displayFilter, displayColumns})
                   >
                     {row.cells.map((cell, i) => {
                       return (
-                        <td
+                        <td className="td"
                           {...cell.getCellProps({
                             layouttransition: spring,
                           })}
@@ -192,7 +206,7 @@ export default function UdTable({ columns, data, displayFilter, displayColumns})
         Pagination can be built however you'd like. 
         This is just a very basic UI implementation:
       */}
-      <div style={{color:'white'}}>
+      <div style={{color:'black'}}>
         <button onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
           {'<<'}
         </button>{' '}
