@@ -42,6 +42,7 @@ export default function UdTable({ columns, data, displayFilter, displayColumns})
         columns,
         data,
         defaultColumn,
+        initialState: { pageIndex: 2 },
       },
       useResizeColumns,
       useBlockLayout,
