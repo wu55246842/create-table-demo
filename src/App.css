@@ -56,7 +56,7 @@
 }
 
 .th :last-child, .td :last-child {
-  border-right: 0;
+  border-right: 1;
 }
 .resizer, .resizer {
   display: inline-block;

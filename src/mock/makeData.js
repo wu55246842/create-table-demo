@@ -1,8 +1,5 @@
 
-const randomName = (prefix = "", randomLength = 7) => {
-    prefix === undefined ? prefix = "" : prefix;
-    randomLength === undefined ? randomLength = 8 : randomLength;
- 
+const randomName = (prefix, randomLength) => { 
     let nameArr = [
         [1, 2, 3, 4, 5, 6, 7, 8, 9, 0],
         ["a", "b", "c", "d", "e", "f", "g", "h", "i", "g", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"]
@@ -31,8 +28,8 @@ const range = len => {
 const newPerson = () => {
   const statusChance = Math.random()
   return {
-    firstName: randomName(),
-    lastName: randomName(),
+    firstName: randomName("",7),
+    lastName: randomName("",7),
     age: Math.floor(Math.random() * 30),
     visits: Math.floor(Math.random() * 100),
     progress: Math.floor(Math.random() * 100),
